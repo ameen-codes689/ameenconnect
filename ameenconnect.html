@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AmeenConnect</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0d0f14;
+      --surface:   #151820;
+      --card:      #1c2030;
+      --border:    #252b3b;
+      --accent:    #6c63ff;
+      --accent2:   #a78bfa;
+      --green:     #34d399;
+      --red:       #f87171;
+      --text:      #e8eaf0;
+      --muted:     #7b82a0;
+      --radius:    14px;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 40px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .logo-text {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .logo-text span {
+      color: var(--accent2);
+    }
+
+    .nav-badge {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: .04em;
+      color: var(--green);
+      background: rgba(52,211,153,.12);
+      border: 1px solid rgba(52,211,153,.25);
+      border-radius: 20px;
+      padding: 3px 10px;
+      text-transform: uppercase;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      text-align: center;
+      padding: 72px 24px 48px;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 20px;
+    }
+
+    .hero-eyebrow::before,
+    .hero-eyebrow::after {
+      content: '';
+      display: block;
+      width: 28px;
+      height: 1px;
+      background: var(--accent2);
+      opacity: .5;
+    }
+
+    .hero h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2rem, 6vw, 3.4rem);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -.02em;
+      margin-bottom: 14px;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 440px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* ── MAIN LAYOUT ── */
+    main {
+      flex: 1;
+      max-width: 860px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 20px 60px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+    }
+
+    .card-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── DROP ZONE ── */
+    .dropzone {
+      border: 2px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 40px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all .2s ease;
+      position: relative;
+    }
+
+    .dropzone:hover,
+    .dropzone.over {
+      border-color: var(--accent);
+      background: rgba(108,99,255,.06);
+    }
+
+    .dropzone input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+
+    .dz-icon {
+      font-size: 2.4rem;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .dz-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .dz-sub {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .file-chosen {
+      margin-top: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: var(--accent2);
+      font-weight: 500;
+    }
+
+    /* ── UPLOAD BTN ── */
+    .btn-upload {
+      width: 100%;
+      margin-top: 16px;
+      padding: 13px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: .03em;
+      color: #fff;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: opacity .2s, transform .1s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-upload:hover { opacity: .88; }
+    .btn-upload:active { transform: scale(.98); }
+    .btn-upload:disabled { opacity: .45; cursor: not-allowed; }
+
+    /* ── PROGRESS BAR ── */
+    .progress-wrap {
+      display: none;
+      margin-top: 14px;
+    }
+
+    .progress-wrap.visible { display: block; }
+
+    .progress-track {
+      background: var(--border);
+      border-radius: 99px;
+      height: 6px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      height: 100%;
+      width: 0%;
+      border-radius: 99px;
+      transition: width .25s ease;
+    }
+
+    .progress-label {
+      font-size: 0.76rem;
+      color: var(--muted);
+      margin-top: 6px;
+      text-align: right;
+    }
+
+    /* ── TOAST ── */
+    #toast {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #fff;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity .25s, transform .25s;
+      pointer-events: none;
+      z-index: 999;
+      max-width: 320px;
+    }
+
+    #toast.show { opacity: 1; transform: translateY(0); }
+    #toast.success { background: rgba(52,211,153,.9); }
+    #toast.error   { background: rgba(248,113,113,.9); }
+
+    /* ── FILE TABLE ── */
+    .file-count {
+      font-size: 0.78rem;
+      color: var(--muted);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      padding: 2px 10px;
+      font-weight: 500;
+    }
+
+    .files-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .files-header .card-title { margin-bottom: 0; flex: 1; }
+
+    .search-box {
+      position: relative;
+    }
+
+    .search-box input {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 10px 6px 30px;
+      color: var(--text);
+      font-size: 0.82rem;
+      width: 180px;
+      outline: none;
+      transition: border-color .2s;
+    }
+
+    .search-box input:focus { border-color: var(--accent); }
+    .search-box input::placeholder { color: var(--muted); }
+
+    .search-icon {
+      position: absolute;
+      left: 9px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      font-size: 0.8rem;
+      pointer-events: none;
+    }
+
+    .file-row {
+      display: grid;
+      grid-template-columns: 1fr auto auto auto;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 10px;
+      transition: border-color .15s;
+    }
+
+    .file-row:last-child { margin-bottom: 0; }
+
+    .file-row:hover { border-color: var(--accent); }
+
+    .file-info { min-width: 0; }
+
+    .file-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: var(--text);
+    }
+
+    .file-meta {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    .file-type-badge {
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: rgba(108,99,255,.18);
+      color: var(--accent2);
+      border: 1px solid rgba(108,99,255,.25);
+      white-space: nowrap;
+    }
+
+    .file-size {
+      font-size: 0.78rem;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .row-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-icon {
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: opacity .18s, transform .1s;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      text-decoration: none;
+    }
+
+    .btn-icon:active { transform: scale(.96); }
+
+    .btn-dl {
+      background: rgba(108,99,255,.18);
+      color: var(--accent2);
+      border: 1px solid rgba(108,99,255,.3);
+    }
+
+    .btn-dl:hover { background: rgba(108,99,255,.3); }
+
+    .btn-del {
+      background: rgba(248,113,113,.12);
+      color: var(--red);
+      border: 1px solid rgba(248,113,113,.25);
+    }
+
+    .btn-del:hover { background: rgba(248,113,113,.25); }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--muted);
+    }
+
+    .empty-state .empty-icon { font-size: 2.5rem; margin-bottom: 10px; }
+    .empty-state p { font-size: 0.9rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 18px;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    footer span { color: var(--accent2); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      nav { padding: 14px 18px; }
+      .hero { padding: 48px 18px 32px; }
+      .card { padding: 20px; }
+      .file-row { grid-template-columns: 1fr auto; gap: 8px; }
+      .file-type-badge, .file-size { display: none; }
+      .search-box input { width: 130px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="logo" href="#">
+      <div class="logo-icon">🔗</div>
+      <span class="logo-text">Ameen<span>Connect</span></span>
+    </a>
+    <span class="nav-badge">No login needed</span>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-eyebrow">Secure · Fast · Simple</div>
+    <h1>Share files with<br><em>zero friction</em></h1>
+    <p>Upload documents to shared storage and share the download link instantly. No account required.</p>
+  </section>
+
+  <!-- MAIN -->
+  <main>
+
+    <!-- Upload Card -->
+    <div class="card">
+      <div class="card-title">Upload a file</div>
+
+      <div class="dropzone" id="dropzone">
+        <input type="file" id="fileInput" />
+        <span class="dz-icon">📂</span>
+        <div class="dz-label">Drop your file here</div>
+        <div class="dz-sub">or click to browse</div>
+        <div class="file-chosen" id="fileChosen" style="display:none">
+          <span>📄</span><span id="chosenName"></span>
+        </div>
+      </div>
+
+      <div class="progress-wrap" id="progressWrap">
+        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="progress-label" id="progressLabel">0%</div>
+      </div>
+
+      <button class="btn-upload" id="uploadBtn" disabled>
+        <span>⬆️</span> Upload file
+      </button>
+    </div>
+
+    <!-- Files Card -->
+    <div class="card">
+      <div class="files-header">
+        <div class="card-title">Your files</div>
+        <span class="file-count" id="fileCount">loading…</span>
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="searchInput" placeholder="Search files…" />
+        </div>
+      </div>
+
+      <div id="fileList"><div class="empty-state"><div class="empty-icon">🗂️</div><p>Loading files…</p></div></div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer>Built with 💜 on <span>AmeenConnect</span> — upload, share, download.</footer>
+
+  <!-- TOAST -->
+  <div id="toast"></div>
+
+  <script>
+    const API = 'https://fileshare-production-6ac8.up.railway.app';
+    const uploadBtn  = document.getElementById('uploadBtn');
+    const fileInput  = document.getElementById('fileInput');
+    const fileChosen = document.getElementById('fileChosen');
+    const chosenName = document.getElementById('chosenName');
+    const fileList   = document.getElementById('fileList');
+    const fileCount  = document.getElementById('fileCount');
+    const searchInput= document.getElementById('searchInput');
+    const dropzone   = document.getElementById('dropzone');
+    const progressWrap= document.getElementById('progressWrap');
+    const progressFill= document.getElementById('progressFill');
+    const progressLabel=document.getElementById('progressLabel');
+
+    let allFiles = [];
+
+    /* ── Toast ── */
+    function toast(msg, type='success') {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = `show ${type}`;
+      setTimeout(() => { t.className = ''; }, 3200);
+    }
+
+    /* ── Format helpers ── */
+    function fmtSize(bytes) {
+      if (bytes < 1024) return bytes + ' B';
+      if (bytes < 1024*1024) return (bytes/1024).toFixed(1) + ' KB';
+      return (bytes/(1024*1024)).toFixed(2) + ' MB';
+    }
+
+    function fmtDate(str) {
+      const d = new Date(str);
+      return d.toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+    }
+
+    function extBadge(type, name) {
+      const ext = (name || '').split('.').pop().toUpperCase();
+      return ext || (type || '').split('/')[1]?.toUpperCase() || 'FILE';
+    }
+
+    /* ── Render files ── */
+    function renderFiles(files) {
+      if (!files || files.length === 0) {
+        fileList.innerHTML = `<div class="empty-state"><div class="empty-icon">🗂️</div><p>No files yet — upload your first one above.</p></div>`;
+        return;
+      }
+      fileList.innerHTML = files.map(f => `
+        <div class="file-row">
+          <div class="file-info">
+            <div class="file-name">${f.filename || f.name || 'Unknown'}</div>
+            <div class="file-meta">Uploaded ${fmtDate(f.uploaded_at || f.createdAt || '')}</div>
+          </div>
+          <span class="file-type-badge">${extBadge(f.type || f.mimetype, f.filename || f.name)}</span>
+          <span class="file-size">${fmtSize(f.size || 0)}</span>
+          <div class="row-actions">
+            <a class="btn-icon btn-dl" href="${API}/download/${f.id}" target="_blank" rel="noopener">⬇️ Download</a>
+            <button class="btn-icon btn-del" onclick="deleteFile(${f.id})">🗑️</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    /* ── Load files ── */
+    async function loadFiles() {
+      try {
+        const r = await fetch(`${API}/files`);
+        const data = await r.json();
+        allFiles = Array.isArray(data) ? data : (data.files || []);
+        fileCount.textContent = `${allFiles.length} file${allFiles.length !== 1 ? 's' : ''}`;
+        renderFiles(allFiles);
+      } catch(e) {
+        fileCount.textContent = '—';
+        fileList.innerHTML = `<div class="empty-state"><div class="empty-icon">⚠️</div><p>Could not load files. Is the server running?</p></div>`;
+      }
+    }
+
+    /* ── Search ── */
+    searchInput.addEventListener('input', () => {
+      const q = searchInput.value.toLowerCase();
+      const filtered = allFiles.filter(f => (f.filename||f.name||'').toLowerCase().includes(q));
+      renderFiles(filtered);
+    });
+
+    /* ── File pick ── */
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files.length) {
+        chosenName.textContent = fileInput.files[0].name;
+        fileChosen.style.display = 'flex';
+        uploadBtn.disabled = false;
+      } else {
+        fileChosen.style.display = 'none';
+        uploadBtn.disabled = true;
+      }
+    });
+
+    /* ── Drag & drop ── */
+    ['dragover','dragenter'].forEach(ev => dropzone.addEventListener(ev, e => {
+      e.preventDefault(); dropzone.classList.add('over');
+    }));
+    ['dragleave','drop'].forEach(ev => dropzone.addEventListener(ev, e => {
+      e.preventDefault(); dropzone.classList.remove('over');
+    }));
+    dropzone.addEventListener('drop', e => {
+      const files = e.dataTransfer.files;
+      if (files.length) {
+        fileInput.files = files;
+        chosenName.textContent = files[0].name;
+        fileChosen.style.display = 'flex';
+        uploadBtn.disabled = false;
+      }
+    });
+
+    /* ── Upload ── */
+    uploadBtn.addEventListener('click', async () => {
+      if (!fileInput.files.length) return;
+      const file = fileInput.files[0];
+      const fd = new FormData();
+      fd.append('file', file);
+
+      uploadBtn.disabled = true;
+      uploadBtn.innerHTML = '<span>⏳</span> Uploading…';
+      progressWrap.classList.add('visible');
+      progressFill.style.width = '0%';
+      progressLabel.textContent = '0%';
+
+      // Simulated progress with XHR
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', `${API}/upload`);
+
+      xhr.upload.addEventListener('progress', e => {
+        if (e.lengthComputable) {
+          const pct = Math.round(e.loaded/e.total*100);
+          progressFill.style.width = pct + '%';
+          progressLabel.textContent = pct + '%';
+        }
+      });
+
+      xhr.addEventListener('load', () => {
+        progressFill.style.width = '100%';
+        progressLabel.textContent = '100%';
+        if (xhr.status >= 200 && xhr.status < 300) {
+          toast('File uploaded successfully! 🎉');
+          fileInput.value = '';
+          fileChosen.style.display = 'none';
+          setTimeout(() => {
+            progressWrap.classList.remove('visible');
+            progressFill.style.width = '0%';
+          }, 900);
+          loadFiles();
+        } else {
+          toast('Upload failed. Please try again.', 'error');
+          progressWrap.classList.remove('visible');
+        }
+        uploadBtn.disabled = false;
+        uploadBtn.innerHTML = '<span>⬆️</span> Upload file';
+      });
+
+      xhr.addEventListener('error', () => {
+        toast('Network error — upload failed.', 'error');
+        uploadBtn.disabled = false;
+        uploadBtn.innerHTML = '<span>⬆️</span> Upload file';
+        progressWrap.classList.remove('visible');
+      });
+
+      xhr.send(fd);
+    });
+
+    /* ── Delete ── */
+    async function deleteFile(id) {
+      if (!confirm('Delete this file permanently?')) return;
+      try {
+        const r = await fetch(`${API}/files/${id}`, { method: 'DELETE' });
+        if (r.ok) {
+          toast('File deleted.');
+          loadFiles();
+        } else {
+          toast('Delete failed.', 'error');
+        }
+      } catch(e) {
+        toast('Network error.', 'error');
+      }
+    }
+
+    /* ── Init ── */
+    loadFiles();
+  </script>
+</body>
+</html>
